@@ -1,0 +1,25 @@
+{
+  "name": "anime-art-portfolio",
+  "version": "1.0.0",
+  "description": "Dark themed anime art portfolio website",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server",
+    "build": "webpack --mode production"
+  },
+  "keywords": [
+    "anime",
+    "art",
+    "portfolio",
+    "dark-theme"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "three": "^0.137.0",
+    "@types/three": "^0.137.0",
+    "live-server": "^1.2.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}
