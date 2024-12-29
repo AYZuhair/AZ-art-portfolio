@@ -24,7 +24,6 @@
     box-sizing: border-box;
 }
 
-/* Light theme overrides */
 body.light-theme {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -34,11 +33,78 @@ body.light-theme {
     background: rgba(255, 255, 255, 0.9);
 }
 
+.light-theme .nav-links a {
+    color: var(--text-secondary);
+}
+
+.light-theme .animated-background {
+    background: linear-gradient(125deg, #f5f5f5 0%, #ffffff 100%);
+}
+
+.light-theme .animated-background::before {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(107, 70, 193, 0.05) 0%,
+        rgba(128, 90, 213, 0.05) 10%,
+        rgba(159, 122, 234, 0.05) 20%
+    );
+}
+
+.light-theme .animated-background::after {
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(107, 70, 193, 0.03) 0%,
+        rgba(128, 90, 213, 0.03) 10%,
+        rgba(159, 122, 234, 0.03) 20%
+    );
+}
+
+.light-theme .about {
+    background-color: var(--bg-secondary);
+}
+
+.light-theme .footer {
+    background-color: var(--bg-secondary);
+}
+
 .light-theme .art-info {
-    background: linear-gradient(transparent, rgba(255, 255, 255, 0.9));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    color: white;
+}
+
+.light-theme .contact-form input,
+.light-theme .contact-form textarea {
+    background-color: white;
+    border: 1px solid #ddd;
     color: var(--text-primary);
 }
 
+.light-theme .form-group input::placeholder,
+.light-theme .form-group textarea::placeholder {
+    color: #666;
+}
+
+/* Ensure logo text remains visible in light mode */
+.light-theme .logo-text {
+    background: linear-gradient(45deg, var(--accent), var(--accent-hover));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Update section titles for better contrast in light mode */
+.light-theme .section-title {
+    color: var(--text-primary);
+}
+
+/* Update hero section text for light mode */
+.light-theme .hero-content {
+    color: white; /* Keep hero text white since it's on a dark overlay */
+}
+
+/* Ensure proper contrast for theme toggle icon */
+.light-theme .theme-toggle {
+    color: var(--text-primary);
+}
 
 body {
     font-family: 'Poppins', sans-serif;
