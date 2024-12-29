@@ -292,6 +292,7 @@ function initializeGallery() {
 }
 
 function initializeNavigation() {
+    // Existing navigation code
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -304,6 +305,18 @@ function initializeNavigation() {
             });
         });
     });
+
+    // Add logo click handler
+    const logo = document.querySelector('.logo-text');
+    if (logo) {
+        logo.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 }
 
 // Modal functionality
