@@ -24,6 +24,22 @@
     box-sizing: border-box;
 }
 
+/* Light theme overrides */
+body.light-theme {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.light-theme .navbar {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.light-theme .art-info {
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.9));
+    color: var(--text-primary);
+}
+
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-primary);
@@ -226,7 +242,7 @@ body {
     color: var(--accent);
 }
 
-/* Modal Styles */
+/* Modal styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -254,9 +270,6 @@ body {
     max-height: 90vh;
     transform: scale(0.9);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--bg-secondary);
-    padding: 1rem;
-    border-radius: 8px;
 }
 
 .modal-overlay.active .modal-content {
@@ -267,6 +280,7 @@ body {
     max-width: 100%;
     max-height: calc(90vh - 100px);
     object-fit: contain;
+    border-radius: 8px;
 }
 
 .modal-controls {

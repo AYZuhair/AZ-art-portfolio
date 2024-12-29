@@ -1,14 +1,10 @@
 // Import utilities
-import { debounce, loadImage, createImageGrid, initializeParallax } from './utils.js';
 
 // Main initialization
 document.addEventListener('DOMContentLoaded', () => {
     initializeNavigation();
-    initializeThreeJS();
-    initializeAnimations();
     initializeGallery();
     initializeContactForm();
-    initializeParallax();
     handleScrollEffects();
     initializeScrollArrow();
     initializeThemeToggle();
@@ -26,6 +22,7 @@ function initializeThemeToggle() {
     // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme') || 'dark';
     htmlElement.setAttribute('data-theme', savedTheme);
+    document.body.classList.toggle('light-theme', savedTheme === 'light');
     updateThemeIcon(savedTheme);
 
     themeToggle.addEventListener('click', () => {
@@ -33,6 +30,7 @@ function initializeThemeToggle() {
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
         htmlElement.setAttribute('data-theme', newTheme);
+        document.body.classList.toggle('light-theme', newTheme === 'light');
         localStorage.setItem('theme', newTheme);
         updateThemeIcon(newTheme);
     });
@@ -41,12 +39,14 @@ function initializeThemeToggle() {
 // Scroll arrow functionality
 function initializeScrollArrow() {
     const scrollArrow = document.getElementById('gallery-scroll');
-    scrollArrow.addEventListener('click', () => {
-        document.getElementById('gallery').scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+    if (scrollArrow) {
+        scrollArrow.addEventListener('click', () => {
+            document.getElementById('gallery').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         });
-    });
+    }
 }
 
 // // Navigation functionality
@@ -89,46 +89,68 @@ function initializeScrollArrow() {
 
 // Image modal functionality
 function createImageModal(imageSrc) {
+    // Remove any existing modals
+    const existingModal = document.querySelector('.modal-overlay');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    // Create modal overlay
     const modal = document.createElement('div');
-    modal.className = 'modal';
+    modal.className = 'modal-overlay';
     
-    const content = `
+    // Create modal content
+    modal.innerHTML = `
         <div class="modal-content">
-            <img src="${imageSrc}" alt="Enlarged artwork">
-            <button class="download-btn">
-                <i class="fas fa-download"></i> Download
-            </button>
-            <button class="close-modal">
-                <i class="fas fa-times"></i>
-            </button>
+            <img src="${imageSrc}" alt="Enlarged artwork" class="modal-image">
+            <div class="modal-controls">
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download
+                </button>
+                <button class="close-modal-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
     `;
     
-    modal.innerHTML = content;
     document.body.appendChild(modal);
     
-    // Trigger animation after a brief delay
-    setTimeout(() => modal.classList.add('active'), 10);
-    
-    // Download functionality
+    // Trigger animation
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
+
+    // Setup download functionality
     const downloadBtn = modal.querySelector('.download-btn');
     downloadBtn.addEventListener('click', () => {
         const link = document.createElement('a');
         link.href = imageSrc;
         link.download = imageSrc.split('/').pop();
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
     });
-    
-    // Close modal functionality
+
+    // Setup close functionality
     const closeModal = () => {
         modal.classList.remove('active');
-        setTimeout(() => modal.remove(), 300);
+        setTimeout(() => {
+            document.body.removeChild(modal);
+            document.body.style.overflow = '';
+        }, 300);
     };
-    
-    modal.querySelector('.close-modal').addEventListener('click', closeModal);
+
+    modal.querySelector('.close-modal-btn').addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
+        if (e.target === modal) {
+            closeModal();
+        }
     });
+
+    // Prevent scroll when modal is open
+    document.body.style.overflow = 'hidden';
 }
 
 // Three.js initialization and setup
@@ -263,7 +285,7 @@ function initializeGallery() {
         if (artCard) {
             const img = artCard.querySelector('img');
             if (img) {
-                showImageModal(img.src);
+                createImageModal(img.src);
             }
         }
     });
@@ -349,7 +371,7 @@ function initializeContactForm() {
 function handleScrollEffects() {
     const scrollIndicator = document.querySelector('.scroll-indicator');
     
-    window.addEventListener('scroll', debounce(() => {
+    window.addEventListener('scroll', () => {
         // Hide scroll indicator after scrolling
         if (window.scrollY > 100 && scrollIndicator) {
             scrollIndicator.style.opacity = '0';
@@ -361,7 +383,7 @@ function handleScrollEffects() {
             const scroll = window.pageYOffset;
             hero.style.backgroundPositionY = `${scroll * 0.5}px`;
         }
-    }, 10));
+    });
 }
 
 // Utility function for notifications
@@ -451,3 +473,10 @@ function showImageModal(imageSrc) {
         document.body.style.overflow = '';
     });
 }
+window.addEventListener('load', () => {
+    // Apply saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.body.classList.toggle('light-theme', savedTheme === 'light');
+    updateThemeIcon(savedTheme);
+});
